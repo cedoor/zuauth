@@ -13,6 +13,7 @@
         "@pcd/pcd-types": "^0.8.0",
         "@pcd/semaphore-identity-pcd": "^0.8.0",
         "@pcd/zk-eddsa-event-ticket-pcd": "^0.2.1",
+        "axios": "^1.6.0",
         "iron-session": "^6.3.1",
         "next": "14.0.1",
         "react": "^18",

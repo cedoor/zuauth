@@ -1,3 +1,11 @@
+export const ZUPASS_URL = "https://zupass.org"
+
+// https://api.zupass.org/issue/eddsa-public-key
+export const zupassPublicKey: [string, string] = [
+    "05e0c4e8517758da3a26c80310ff2fe65b9f85d89dfc9c80e6d0b6477f88173e",
+    "29ae64b615383a0ebb1bc37b3a642d82d37545f0f5b1444330300e4c4eedba3f"
+]
+
 const ticketTypeNames = ["ZuzaluResident", "ZuzaluOrganizer", "ZuzaluVisitor", "ZuConnectResident"] as const
 
 type TicketTypeName = (typeof ticketTypeNames)[number]
@@ -53,6 +61,9 @@ const ticketTypes: Record<TicketTypeName, Array<{ eventId: string; productId: st
 
 // Map the above data structure into a simple array of event IDs.
 export const supportedEvents = Object.values(ticketTypes).flatMap((items) => items.map((item) => item.eventId))
+
+// Map the above data structure into a simple array of product IDs.
+export const supportedProducs = Object.values(ticketTypes).flatMap((items) => items.map((item) => item.productId))
 
 /**
  * Use the above data structure to map a ticket's event ID and product ID to

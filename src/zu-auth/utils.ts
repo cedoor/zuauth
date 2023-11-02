@@ -1,4 +1,4 @@
-import { EdDSATicketPCDPackage, ITicketData } from "@pcd/eddsa-ticket-pcd"
+import { EdDSATicketPCDPackage } from "@pcd/eddsa-ticket-pcd"
 import { ArgumentTypeName } from "@pcd/pcd-types"
 import { SemaphoreIdentityPCDPackage } from "@pcd/semaphore-identity-pcd"
 import {
@@ -6,21 +6,18 @@ import {
     ZKEdDSAEventTicketPCDArgs,
     ZKEdDSAEventTicketPCDPackage
 } from "@pcd/zk-eddsa-event-ticket-pcd"
-import { useEffect, useState } from "react"
-import { supportedEvents } from "./config/zupass"
-import { openZupassPopup, useZupassPopupMessages } from "./PassportPopup"
-import { constructZupassPcdGetRequestUrl } from "./PassportInterface"
-
-const ZUPASS_URL = "https://zupass.org"
+import { constructZupassPcdGetRequestUrl } from "./passport-interface/PassportInterface"
+import { ZUPASS_URL, supportedEvents, supportedProducs } from "./config"
+import { openZupassPopup } from "./passport-interface/PassportPopup"
 
 /**
  * Opens a Zupass popup to make a proof of a ZK EdDSA event ticket PCD.
  */
-function openZKEdDSAEventTicketPopup(
+export function openZKEdDSAEventTicketPopup(
     fieldsToReveal: EdDSATicketFieldsToReveal,
-    watermark: bigint,
-    validEventIds: string[],
-    validProductIds: string[]
+    watermark: string | bigint,
+    validEventIds: string[] = supportedEvents,
+    validProductIds: string[] = supportedProducs
 ) {
     const args: ZKEdDSAEventTicketPCDArgs = {
         ticket: {
@@ -79,61 +76,12 @@ function openZKEdDSAEventTicketPopup(
     openZupassPopup(popupUrl, proofUrl)
 }
 
-type PartialTicketData = Partial<ITicketData>
+export function parseSerializedPCD(serializedPCD: string): string | undefined {
+    try {
+        const { pcd } = JSON.parse(serializedPCD)
 
-async function login() {
-    const nonce = await (
-        await fetch("/api/nonce", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            }
-        })
-    ).text()
-
-    openZKEdDSAEventTicketPopup(
-        {
-            revealAttendeeEmail: true,
-            revealEventId: true,
-            revealProductId: true
-        },
-        BigInt(nonce),
-        supportedEvents,
-        []
-    )
-}
-
-export function useZupass({ onAuth }: { onAuth: () => void }): {
-    login: () => Promise<void>
-    ticketData: PartialTicketData | undefined
-} {
-    const [pcdStr] = useZupassPopupMessages()
-    const [ticketData, setTicketData] = useState<PartialTicketData | undefined>(undefined)
-
-    useEffect(() => {
-        ;(async () => {
-            if (pcdStr) {
-                const response = await fetch("/api/login", {
-                    method: "POST",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        "Content-Type": "application/json"
-                    },
-                    body: pcdStr
-                })
-
-                if (response.status === 200) {
-                    setTicketData(await response.json())
-                    onAuth()
-                }
-            }
-        })()
-    }, [pcdStr])
-
-    return { login, ticketData }
+        return pcd
+    } catch {
+        return undefined
+    }
 }
