@@ -44,11 +44,6 @@ export default function Home() {
         )
     }, [authenticate])
 
-    // TODO
-    // - ulteriore refactoring pacchetto
-    // - deploy app
-    // - readme file
-
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-12 pb-32">
             <Head>
