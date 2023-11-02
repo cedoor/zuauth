@@ -1,5 +1,10 @@
 <p align="center">
     <h1 align="center">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cedoor/zuauth/blob/main/example/public/light-icon.png">
+            <source media="(prefers-color-scheme: light)" srcset="https://github.com/cedoor/zuauth/blob/main/example/public/icon.png">
+            <img width="50" alt="Semaphore icon" src="https://github.com/cedoor/zuauth/blob/main/example/public/icon.png">
+        </picture>
         ZuAuth
     </h1>
     <p align="center">A simple toolkit designed to streamline the development of a zero-knowledge authentication system with Zupass tickets.</p>
