@@ -1,5 +1,5 @@
 import { withSessionRoute } from "@/utils/withSession"
-import { supportedEvents, zupassPublicKey } from "@/zu-auth/config"
+import { supportedEvents, zupassPublicKey } from "zuauth"
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd"
 import { NextApiRequest, NextApiResponse } from "next"
 

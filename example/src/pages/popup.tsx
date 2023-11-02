@@ -1,4 +1,4 @@
-import { useZupassPopupSetup } from "@/zu-auth/passport-interface/PassportPopup"
+import { useZupassPopupSetup } from "zuauth"
 
 /**
  * This popup sends requests and receives PCDs from the passport.

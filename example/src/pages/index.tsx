@@ -1,4 +1,4 @@
-import useZuAuth from "@/zu-auth/hooks/useZuAuth"
+import { useZuAuth } from "zuauth"
 import axios from "axios"
 import Head from "next/head"
 import { useCallback, useEffect, useState } from "react"
@@ -46,7 +46,6 @@ export default function Home() {
 
     // TODO
     // - ulteriore refactoring pacchetto
-    // - isolamento pacchetto npm
     // - deploy app
     // - readme file
 
