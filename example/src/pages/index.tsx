@@ -1,7 +1,8 @@
-import { useZuAuth } from "zuauth"
 import axios from "axios"
 import Head from "next/head"
+import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
+import { useZuAuth } from "zuauth"
 
 export default function Home() {
     const { authenticate, pcd } = useZuAuth()
@@ -58,8 +59,13 @@ export default function Home() {
         <main className="flex min-h-screen flex-col items-center justify-center p-12 pb-32">
             <Head>
                 <title>ZuAuth Example</title>
+                <link rel="icon" type="image/x-icon" href="/favicon.ico" />
             </Head>
             <div className="max-w-xl w-full">
+                <div className="flex justify-center">
+                    <Image width="150" height="150" alt="ZuAuth Icon" src="/light-icon.png" />
+                </div>
+
                 <h1 className="my-8 text-2xl font-semibold text-center">Login</h1>
 
                 <p className="text-justify">
