@@ -7,7 +7,7 @@ import {
     ZKEdDSAEventTicketPCDPackage
 } from "@pcd/zk-eddsa-event-ticket-pcd"
 import { constructZupassPcdGetRequestUrl } from "./passport-interface/PassportInterface"
-import { ZUPASS_URL, supportedEvents, supportedProducs } from "./config"
+import { ZUPASS_URL, supportedEvents, supportedProducs, zupassPublicKey } from "./config"
 import { openZupassPopup } from "./passport-interface/PassportPopup"
 
 /**
@@ -17,7 +17,8 @@ export function openZKEdDSAEventTicketPopup(
     fieldsToReveal: EdDSATicketFieldsToReveal,
     watermark: string | bigint,
     validEventIds: string[] = supportedEvents,
-    validProductIds: string[] = supportedProducs
+    validProductIds: string[] = supportedProducs,
+    popupRoute: string = "popup"
 ) {
     const args: ZKEdDSAEventTicketPCDArgs = {
         ticket: {
@@ -59,7 +60,7 @@ export function openZKEdDSAEventTicketPopup(
         }
     }
 
-    const popupUrl = window.location.origin + "/popup"
+    const popupUrl = window.location.origin + "/" + popupRoute
 
     const proofUrl = constructZupassPcdGetRequestUrl<typeof ZKEdDSAEventTicketPCDPackage>(
         ZUPASS_URL,
@@ -84,4 +85,8 @@ export function parseSerializedPCD(serializedPCD: string): string | undefined {
     } catch {
         return undefined
     }
+}
+
+export function isZupassPublicKey(publicKey: [string, string]): boolean {
+    return zupassPublicKey[0] === publicKey[0] && zupassPublicKey[1] === publicKey[1]
 }

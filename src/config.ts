@@ -64,19 +64,3 @@ export const supportedEvents = Object.values(ticketTypes).flatMap((items) => ite
 
 // Map the above data structure into a simple array of product IDs.
 export const supportedProducs = Object.values(ticketTypes).flatMap((items) => items.map((item) => item.productId))
-
-/**
- * Use the above data structure to map a ticket's event ID and product ID to
- * a known ticket type, if any exists. Returns undefined if no match is found.
- */
-export function matchTicketToType(eventIdToMatch: string, productIdToMatch: string): TicketTypeName | undefined {
-    for (const name of ticketTypeNames) {
-        for (const { eventId, productId } of ticketTypes[name]) {
-            if (eventId === eventIdToMatch && productId === productIdToMatch) {
-                return name
-            }
-        }
-    }
-
-    return undefined
-}

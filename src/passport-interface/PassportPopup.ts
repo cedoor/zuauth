@@ -35,7 +35,7 @@ export function useZupassPopupMessages() {
  * that can be processed by the `useZupassPopupMessages` hook. PendingPCD requests
  * can further be processed by `usePendingPCD` and `usePCDMultiplexer`.
  */
-export function useZupassPopupSetup() {
+export function usePopup() {
     // Usually this page redirects immediately. If not, show an error.
     const [error, setError] = useState("")
 
@@ -98,5 +98,6 @@ export function useZupassPopupSetup() {
  */
 export function openZupassPopup(popupUrl: string, proofUrl: string) {
     const url = `${popupUrl}?proofUrl=${encodeURIComponent(proofUrl)}`
+
     window.open(url, "_blank", "width=450,height=600,top=100,popup")
 }
