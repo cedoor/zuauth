@@ -1,17 +1,15 @@
 import { withSessionRoute } from "@/utils/withSession"
-import { supportedEvents, zupassPublicKey } from "zuauth"
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd"
 import { NextApiRequest, NextApiResponse } from "next"
+import { isZupassPublicKey, supportedEvents } from "zuauth"
 
 const nullifiers = new Set<string>()
 
 /**
- * The login checks the validity of the PCD, ensures that the ticket
- * is indeed supported by Zupass, and that it has been signed with the correct
- * EdDSA key. The watermark used to create the PCD and as a nonce in the
- * authentication mechanism must be the same as the one in the current session.
- * Once all checks are passed, a user session is created in which the watermark
- * and nullifier are saved.
+ * The login checks the validity of the PCD and ensures that the ticket
+ * has been issued by Zupass. The watermark used to create the PCD must equal
+ * the nonce of the current session.
+ * The PCD nullifier is saved to prevent the same PCD from being used for another login.
  */
 export default withSessionRoute(async function (req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -31,7 +29,7 @@ export default withSessionRoute(async function (req: NextApiRequest, res: NextAp
             return
         }
 
-        if (zupassPublicKey[0] !== pcd.claim.signer[0] || zupassPublicKey[1] !== pcd.claim.signer[1]) {
+        if (!isZupassPublicKey(pcd.claim.signer)) {
             console.error(`[ERROR] PCD is not signed by Zupass`)
 
             res.status(401).send("PCD is not signed by Zupass")
@@ -83,13 +81,12 @@ export default withSessionRoute(async function (req: NextApiRequest, res: NextAp
         // same PCD from being reused for another login.
         nullifiers.add(pcd.claim.nullifierHash)
 
-        // Save the data related to the fields revealed during the generation
-        // of the zero-knowledge proof.
+        // Save the ticket's data.
         req.session.user = pcd.claim.partialTicket
 
         await req.session.save()
 
-        res.status(200).send({ ticket: req.session.user })
+        res.status(200).send({ user: req.session.user })
     } catch (error: any) {
         console.error(`[ERROR] ${error}`)
 

@@ -5830,13 +5830,13 @@ __metadata:
     react-dom: "npm:^18"
     tailwindcss: "npm:^3.3.0"
     typescript: "npm:^5"
-    zuauth: "npm:0.1.2"
+    zuauth: "npm:0.2.1"
   languageName: unknown
   linkType: soft
 
-"zuauth@npm:0.1.2":
-  version: 0.1.2
-  resolution: "zuauth@npm:0.1.2"
+"zuauth@npm:0.2.1":
+  version: 0.2.1
+  resolution: "zuauth@npm:0.2.1"
   dependencies:
     "@pcd/eddsa-ticket-pcd": "npm:^0.3.0"
     "@pcd/pcd-types": "npm:^0.8.0"
@@ -5844,6 +5844,6 @@ __metadata:
     "@pcd/zk-eddsa-event-ticket-pcd": "npm:^0.2.1"
     react: "npm:^18"
     react-dom: "npm:^18"
-  checksum: 216d5bf65e4e00ff48c94fb37104d894b93e72d3c9d67e44b25a9a87ba0a0df4a7c0a876af78a5bbd841b06f85b30896e3c79f170be03a618ea4058f7dd44eff
+  checksum: 7683db6dafb6fdf4137e94512c0b8fba49c7afbd0549313ba4c9c14add56f5b8bdd4c8b784dbbe10a21d672bf637891583e17369b386e0fef4fa41c6cdd9a68e
   languageName: node
   linkType: hard

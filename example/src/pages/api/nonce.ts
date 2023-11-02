@@ -4,11 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next"
 
 /**
  * The nonce is a value used in the authentication mechanism and as a
- * watermark in the EdDSA ticket. This API allows you to
- * generate a random value and save it in the current session.
- * The same nonce will be used by the user for generating the PCD ticket
- * on the client side and must correspond to the one stored in
- * the session in the subsequent API call for the login process.
+ * watermark in the EdDSA ticket. Its value is generated randomly and saved
+ * in the current session.
  */
 export default withSessionRoute(async function (req: NextApiRequest, res: NextApiResponse) {
     try {
