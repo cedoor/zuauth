@@ -20,9 +20,6 @@
     <a href="https://www.npmjs.com/package/zuauth">
         <img alt="NPM version" src="https://img.shields.io/npm/v/zuauth?style=flat-square" />
     </a>
-    <a href="https://npmjs.org/package/zuauth">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/zuauth.svg?style=flat-square" />
-    </a>
 </p>
 
 |  The repository includes the `zuauth` package and a commented example demonstrating how to create an authentication system using NextJS and IronSession. Use the [demo](https://zuauth.vercel.app/) and refer to the [tutorial](/#-tutorial) section below to understand how to integrate `zuauth` into your app. |
