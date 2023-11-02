@@ -39,7 +39,7 @@ or yarn:
 yarn add zuauth
 ```
 
-## 📜 Tutarial
+## 📜 Tutorial
 
 > [!NOTE]  
 > The example in the repository uses [`iron-session`](https://github.com/vvo/iron-session) to manage sessions, but you are of course free to integrate your preferred solution.
