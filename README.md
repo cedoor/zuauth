@@ -9,15 +9,15 @@
         <img src="https://img.shields.io/badge/project-PCD-blue.svg?style=flat-square">
     </a>
     <a href="https://www.npmjs.com/package/zuauth">
-        <img alt="NPM version" src="https://img.shields.io/npm/v/@pcd/eddsa-pcd?style=flat-square" />
+        <img alt="NPM version" src="https://img.shields.io/npm/v/zuauth?style=flat-square" />
     </a>
     <a href="https://npmjs.org/package/zuauth">
-        <img alt="Downloads" src="https://img.shields.io/npm/dm/@pcd/eddsa-pcd.svg?style=flat-square" />
+        <img alt="Downloads" src="https://img.shields.io/npm/dm/zuauth.svg?style=flat-square" />
     </a>
 </p>
 
-|     |
-| --- |
+|  WIP  |
+| ----- |
 
 ## 🛠 Install
 
