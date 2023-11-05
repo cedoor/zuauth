@@ -5,7 +5,7 @@
             <source media="(prefers-color-scheme: light)" srcset="https://github.com/cedoor/zuauth/blob/main/example/public/icon.png">
             <img width="50" alt="Semaphore icon" src="https://github.com/cedoor/zuauth/blob/main/example/public/icon.png">
         </picture>
-        ZuAuth
+        Zuauth
     </h1>
     <p align="center">A simple toolkit designed to streamline the development of a zero-knowledge authentication system with Zupass tickets.</p>
 </p>
@@ -24,6 +24,16 @@
 
 |  The repository includes the `zuauth` package and a commented example demonstrating how to create an authentication system using NextJS and IronSession. Use the [demo](https://zuauth.vercel.app/) and refer to the [tutorial](/#-tutorial) section below to understand how to integrate `zuauth` into your app. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+
+```mermaid
+sequenceDiagram
+    Zuauth-client->>Zuauth-server: getNonce()
+    Zuauth-server->>Zuauth-client: return <<nonce>>
+    Zuauth-client->>Zupass: requestPCD()
+    Zupass->>Zuauth-client: return <<ZKTicketPCD>>
+    Zuauth-client->>Zuauth-server: login()
+    Zuauth-server->>Zuauth-client: return <<cookie>>
+```
 
 ## 🛠 Install
 
