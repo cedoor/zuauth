@@ -22,28 +22,10 @@
     </a>
 </p>
 
-|  The repository includes the `zuauth` package along with a documented example demonstrating how to create an authentication system using NextJS and IronSession. Use the [demo](https://zuauth.vercel.app/) and refer to the [tutorial](/#-tutorial) section below to understand how to integrate `zuauth` into your app. |
+|  The repository includes the `zuauth` package along with a documented [example](https://github.com/cedoor/zuauth/blob/main/example/README.md) demonstrating how to create an authentication system using NextJS and IronSession. Use the [demo](https://zuauth.vercel.app/) and refer to the [tutorial](/#-tutorial) section below to understand how to integrate `zuauth` into your app. |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
-```mermaid
-sequenceDiagram
-    Zuauth-client->>Zuauth-server: getNonce()
-    Zuauth-server->>Zuauth-client: return <<nonce>>
-    Zuauth-client->>Zupass: requestPCD()
-    Zupass->>Zuauth-client: return <<ZKTicketPCD>>
-    Zuauth-client->>Zuauth-server: login()
-    Zuauth-server->>Zuauth-client: return <<cookie>>
-```
-
 ## 🛠 Install
-
-Copy the `.env` file as `.env.local`:
-
-```bash
-cp .env .env.local
-```
-
-And add your environment variables.
 
 Install the `zuauth` package with npm:
 
@@ -58,10 +40,8 @@ yarn add zuauth
 ```
 
 ## 📜 Tutorial
-This example includes an optional developer-friendly mode to select an arbitrary subset (from none to all) of ticket fields to be revealed during the authentication process. When the developer mode is off, only the pre-defined set of ticket fields (see step 2 below) will be displayed on the page. You can find multiple simple and specific components (e.g. Toggle) used to maintain the main page component easy to read and customize. The use of local storage allows consistency to be maintained after subsequent page refreshes.
-
 > [!NOTE]  
-> The example in the repository uses [`iron-session`](https://github.com/vvo/iron-session) to manage sessions, but you are of course free to integrate your preferred solution.
+> The [example](https://github.com/cedoor/zuauth/blob/main/example/README.md) in the repository uses [`iron-session`](https://github.com/vvo/iron-session) to manage sessions, but you are of course free to integrate your preferred solution.
 
 ### Server
 
