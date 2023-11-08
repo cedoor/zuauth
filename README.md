@@ -37,6 +37,14 @@ sequenceDiagram
 
 ## 🛠 Install
 
+Copy the `.env` file as `.env.local`:
+
+```bash
+cp .env .env.local
+```
+
+And add your environment variables.
+
 Install the `zuauth` package with npm:
 
 ```bash
