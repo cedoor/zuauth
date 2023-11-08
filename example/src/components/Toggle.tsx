@@ -7,9 +7,7 @@ interface ToggleProps {
     disabled?: boolean;
 }
 
-const Toggle: React.FC<ToggleProps> = ({ checked, onToggle, disabled }) => {
-    const isChecked = checked !== undefined ? checked : false;
-
+const Toggle: React.FC<ToggleProps> = ({ checked = false, onToggle, disabled }) => {
     const handleClick = () => {
         if (!disabled) {
             onToggle();
@@ -18,11 +16,11 @@ const Toggle: React.FC<ToggleProps> = ({ checked, onToggle, disabled }) => {
 
     return (
         <button
-            className={`toggle-icon ${isChecked ? 'active' : ''}`}
+            className={`toggle-icon ${checked ? 'active' : ''}`}
             onClick={handleClick}
             disabled={disabled}
         >
-            {isChecked ? <FaToggleOn size={30} className="text-blue-800"/> : <FaToggleOff size={30} />}
+            {checked ? <FaToggleOn size={30} className="text-blue-800"/> : <FaToggleOff size={30} />}
         </button>
     );
 }

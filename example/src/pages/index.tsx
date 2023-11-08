@@ -1,89 +1,59 @@
 import axios from "axios"
 import Head from "next/head"
 import Image from "next/image"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useZuAuth } from "zuauth"
 import { EdDSATicketFieldsToReveal } from "@pcd/zk-eddsa-event-ticket-pcd"
-import TicketFieldsToRevealGrid from "@/components/TicketFieldsToReveal"
 import Toggle from "@/components/Toggle"
-import RevealedFieldsInfo from "@/components/TicketRevealedFieldsInfo"
+import DisplayRevealedFields from "@/components/DisplayRevealedFields"
+import DeveloperPanel from "@/components/DeveloperPanel"
+
+const defaultSetOfTicketFieldsToReveal: EdDSATicketFieldsToReveal = {
+    revealTicketId: false,
+    revealEventId: true,
+    revealProductId: true,
+    revealTimestampConsumed: false,
+    revealTimestampSigned: false,
+    revealAttendeeSemaphoreId: false,
+    revealIsConsumed: false,
+    revealIsRevoked: false,
+    revealTicketCategory: false,
+    revealAttendeeEmail: true,
+    revealAttendeeName: false
+}
 
 export default function Home() {
     const { authenticate, pcd } = useZuAuth()
     const [user, setUser] = useState<any>()
     const [developerMode, setDeveloperMode] = useState(false);
-    const [ticketFieldsToReveal, setTicketFieldsToReveal] = useState<EdDSATicketFieldsToReveal>({
-        revealTicketId: false,
-        revealEventId: true,
-        revealProductId: true,
-        revealTimestampConsumed: false,
-        revealTimestampSigned: false,
-        revealAttendeeSemaphoreId: false,
-        revealIsConsumed: false,
-        revealIsRevoked: false,
-        revealTicketCategory: false,
-        revealAttendeeEmail: true,
-        revealAttendeeName: false
-    });
-
-    const handleToggleField = (fieldName: keyof EdDSATicketFieldsToReveal) => {
-        setTicketFieldsToReveal((prevState: EdDSATicketFieldsToReveal) => {
-            const revealedFields = {
-                ...prevState,
-                [fieldName]: !prevState[fieldName]
-            };
-
-            localStorage.setItem("ticketFieldsToReveal", JSON.stringify(revealedFields));
-
-            return revealedFields;
-        });
-    };
-
-    const handleSetDeveloperMode = () => {
-        setDeveloperMode((value: boolean) => {
-            localStorage.setItem("developerMode", JSON.stringify(!value))
-
-            if (!value === true) {
-                localStorage.setItem("ticketFieldsToReveal", JSON.stringify(ticketFieldsToReveal));
-            } else {
-                setTicketFieldsToReveal({
-                    revealTicketId: false,
-                    revealEventId: true,
-                    revealProductId: true,
-                    revealTimestampConsumed: false,
-                    revealTimestampSigned: false,
-                    revealAttendeeSemaphoreId: false,
-                    revealIsConsumed: false,
-                    revealIsRevoked: false,
-                    revealTicketCategory: false,
-                    revealAttendeeEmail: true,
-                    revealAttendeeName: false
-                })
-        
-                localStorage.removeItem("ticketFieldsToReveal")
-            }
-            return !value
-        })
-    }
+    const [ticketFieldsToReveal, setTicketFieldsToReveal] = useState<EdDSATicketFieldsToReveal>(defaultSetOfTicketFieldsToReveal);
 
     // Every time the page loads, an API call is made to check if the
-    // user is logged in and, if they are, to retrieve the current session's user data.
+    // user is logged in and, if they are, to retrieve the current session's user data
+    // and local storage data (to guarantee consistency across refreshes).
     useEffect(() => {
         ; (async function () {
             const { data } = await axios.get("/api/user")
             setUser(data.user)
 
-            const savedFields = localStorage.getItem("ticketFieldsToReveal");
-            if (savedFields) {
-                setTicketFieldsToReveal(JSON.parse(savedFields));
-            }
+            const fields = localStorage.getItem("ticketFieldsToReveal");
+            const mode = localStorage.getItem("developerMode")
 
-            const developerMode = localStorage.getItem("developerMode")
-            if (developerMode) {
-                setDeveloperMode(JSON.parse(developerMode))
-            }
+            if (fields) setTicketFieldsToReveal(JSON.parse(fields));
+            if (mode) setDeveloperMode(JSON.parse(mode))
         })()
     }, [])
+
+    // When the popup is closed and the user successfully
+    // generates the PCD, they can login.
+    useEffect(() => {
+        ; (async function () {
+            if (pcd) {
+                const { data } = await axios.post("/api/login", { pcd })
+                setUser(data.user)
+            }
+        })()
+    }, [pcd])
 
     // Before logging in, the PCD is generated with the nonce from the
     // session created on the server.
@@ -94,51 +64,50 @@ export default function Home() {
         const { data } = await axios.post("/api/nonce")
 
         authenticate(
-            developerMode ? { ...ticketFieldsToReveal } : {
-                revealAttendeeEmail: true,
-                revealEventId: true,
-                revealProductId: true
-            },
+            developerMode ? { ...ticketFieldsToReveal } : { ...defaultSetOfTicketFieldsToReveal },
             data.nonce
         )
     }
 
-    // When the popup is closed and the user successfully
-    // generates the PCD, they can login.
-    useEffect(() => {
-        ; (async function () {
-            if (pcd) {
-                const { data } = await axios.post("/api/login", { pcd })
-
-                setUser(data.user)
-            }
-        })()
-    }, [pcd])
-
-    // Logging out simply clears the active session.
+    // Logging out simply clears the active session, local storage and state.
     const logout = async () => {
-
         await axios.post("/api/logout")
+        setUser(false)
 
         localStorage.removeItem("ticketFieldsToReveal")
         localStorage.removeItem("developerMode")
 
-        setTicketFieldsToReveal({
-            revealTicketId: false,
-            revealEventId: true,
-            revealProductId: true,
-            revealTimestampConsumed: false,
-            revealTimestampSigned: false,
-            revealAttendeeSemaphoreId: false,
-            revealIsConsumed: false,
-            revealIsRevoked: false,
-            revealTicketCategory: false,
-            revealAttendeeEmail: true,
-            revealAttendeeName: false
-        })
+        setTicketFieldsToReveal(defaultSetOfTicketFieldsToReveal)
         setDeveloperMode(false)
+    }
 
-        setUser(false)
+    const handleToggleField = (fieldToReveal: keyof EdDSATicketFieldsToReveal) => {
+        setTicketFieldsToReveal(prevState => {
+            const fieldsToReveal = {
+                ...prevState,
+                [fieldToReveal]: !prevState[fieldToReveal]
+            };
+
+            localStorage.setItem("ticketFieldsToReveal", JSON.stringify(fieldsToReveal));
+            return fieldsToReveal;
+        });
+    };
+
+    const handleSetDeveloperMode = () => {
+        setDeveloperMode(value => {
+            const newValue = !value
+
+            if (newValue) {
+                localStorage.setItem("ticketFieldsToReveal", JSON.stringify(ticketFieldsToReveal));
+            } else {
+                setTicketFieldsToReveal(defaultSetOfTicketFieldsToReveal)
+                localStorage.removeItem("ticketFieldsToReveal")
+            }
+
+            localStorage.setItem("developerMode", JSON.stringify(newValue))
+
+            return newValue
+        })
     }
 
     return (
@@ -155,10 +124,6 @@ export default function Home() {
                 <h1 className="my-4 text-2xl font-semibold text-center">
                     ZuAuth Example
                 </h1>
-
-                <div className="text-center">
-
-                </div>
 
                 <p className="my-8 text-justify">
                     This demo illustrates how the{" "}
@@ -181,7 +146,8 @@ export default function Home() {
                     >
                         IronSession
                     </a>
-                    . Check the{" "}
+                    . You can choose which ticket fields to reveal during the authentication process by enabling the Developer Mode.
+                    We kindly invite you to check the{" "}
                     <a
                         className="text-blue-600 visited:text-purple-600"
                         href="https://github.com/cedoor/zuauth#readme"
@@ -213,8 +179,8 @@ export default function Home() {
 
                         <div style={{ height: "300px" }}>
                             {developerMode && (
-                                <TicketFieldsToRevealGrid
-                                    ticketFieldsToReveal={ticketFieldsToReveal}
+                                <DeveloperPanel
+                                    fieldsToReveal={ticketFieldsToReveal}
                                     onToggleField={handleToggleField}
                                     disabled={!!user}
                                 />
@@ -224,7 +190,7 @@ export default function Home() {
                 }
 
                 {user && <div className="my-8 text-center">
-                    <RevealedFieldsInfo user={user} revealedFields={ticketFieldsToReveal} /> </div>}
+                    <DisplayRevealedFields user={user} revealedFields={ticketFieldsToReveal} /> </div>}
             </div>
         </main >
     )
