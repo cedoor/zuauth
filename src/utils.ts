@@ -16,6 +16,7 @@ import { openZupassPopup } from "./passport-interface/PassportPopup"
 export function openZKEdDSAEventTicketPopup(
     fieldsToReveal: EdDSATicketFieldsToReveal,
     watermark: string | bigint,
+    externalNullifier?: string | bigint,
     validEventIds: string[] = supportedEvents,
     validProductIds: string[] = supportedProducs,
     popupRoute: string = "popup"
@@ -55,7 +56,7 @@ export function openZKEdDSAEventTicketPopup(
         },
         externalNullifier: {
             argumentType: ArgumentTypeName.BigInt,
-            value: watermark.toString(),
+            value: externalNullifier ? externalNullifier.toString() : watermark.toString(),
             userProvided: false
         }
     }
