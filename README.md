@@ -7,7 +7,7 @@
         </picture>
         Zuauth
     </h1>
-    <p align="center">A simple toolkit designed to streamline the development of a zero-knowledge authentication system with Zupass tickets.</p>
+    <p align="center">A simple package designed to streamline the development of a zero-knowledge authentication system with Zupass tickets.</p>
 </p>
 
 <p align="center">
