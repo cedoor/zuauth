@@ -62,21 +62,21 @@ https://github.com/cedoor/zuauth/blob/c7c052a0a0b27cee9c3be7bae5dea634d7fc6954/e
 
 https://github.com/cedoor/zuauth/blob/c7c052a0a0b27cee9c3be7bae5dea634d7fc6954/example/src/pages/index.tsx#L26-L45
 
-3. Create a function to login, which generates a nonce and user's PCD:
+4. Create a function to login, which generates a nonce and user's PCD:
 
 https://github.com/cedoor/zuauth/blob/c7c052a0a0b27cee9c3be7bae5dea634d7fc6954/example/src/pages/index.tsx#L58-L70
 
-4. Check when the PCD is generated and returned by the Zupass popup to call the login API:
+5. Check when the PCD is generated and returned by the Zupass popup to call the login API:
 
 https://github.com/cedoor/zuauth/blob/c7c052a0a0b27cee9c3be7bae5dea634d7fc6954/example/src/pages/index.tsx#L47-L56
 
 > [!IMPORTANT]  
 > When the user interacts with the Zupass popup, the output, which is the generated PCD, is not returned by any function but can be found in the `pcd` state variable within the `useZuAuth` hook. It's important to check if the value is defined.
 
-5. Create a function to allow users to log out:
+6. Create a function to allow users to log out:
 
 https://github.com/cedoor/zuauth/blob/c7c052a0a0b27cee9c3be7bae5dea634d7fc6954/example/src/pages/index.tsx#L72-L82
 
-6. Create your UI:
+7. Create your UI:
 
 https://github.com/cedoor/zuauth/blob/c7c052a0a0b27cee9c3be7bae5dea634d7fc6954/example/src/pages/index.tsx#L161-L194
