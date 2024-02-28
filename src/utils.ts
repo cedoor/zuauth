@@ -19,7 +19,9 @@ export function openZKEdDSAEventTicketPopup(
     externalNullifier?: string | bigint,
     validEventIds: string[] = supportedEvents,
     validProductIds: string[] = supportedProducs,
-    popupRoute: string = "popup"
+    popupRoute: string = "popup",
+    proofTitle: string = "ZKEdDSA Ticket Proof",
+    proofDescription: string = "ZKEdDSA Ticket PCD Request"
 ) {
     const args: ZKEdDSAEventTicketPCDArgs = {
         ticket: {
@@ -70,8 +72,8 @@ export function openZKEdDSAEventTicketPopup(
         args,
         {
             genericProveScreen: true,
-            title: "ZKEdDSA Ticket Proof",
-            description: "ZKEdDSA Ticket PCD Request"
+            title: proofTitle,
+            description: proofDescription
         }
     )
 
